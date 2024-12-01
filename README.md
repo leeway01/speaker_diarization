@@ -1,4 +1,5 @@
 # speaker_diarization
+[https://huggingface.co/](https://huggingface.co/pyannote/speaker-diarization)
 
 venv\Scripts\activate
 
