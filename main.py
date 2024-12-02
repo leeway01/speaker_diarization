@@ -7,6 +7,8 @@ os.environ["SB_DISABLE_SYMLINKS"] = "1"
 from moviepy.editor import AudioFileClip
 from spleeter.separator import Separator
 from pyannote.audio import Pipeline
+import librosa
+import soundfile as sf
 
 # Step 1: 영상에서 오디오 추출
 def extract_audio_from_video(video_path, audio_output_path):
@@ -20,19 +22,31 @@ def separate_audio_with_spleeter(audio_path, output_dir):
     separator.separate_to_file(audio_path, output_dir)
     print(f"음원 분리 완료: {output_dir}")
 
-# Step 3: pyannote.audio로 화자 분리
-def diarize_speakers(audio_path, diarization_output_path, hf_token):
+# Step 3: pyannote.audio로 화자 분리 및 화자별 음성 파일 생성
+def diarize_speakers(audio_path, diarization_output_path, speaker_audio_dir, hf_token):
     # Hugging Face 토큰으로 Pipeline 초기화
     pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=hf_token)
     
     diarization = pipeline(audio_path)
     
-    # 화자별 발화 구간 저장
-    with open(diarization_output_path, "w") as diarization_file:
-        for turn, _, speaker in diarization.itertracks(yield_label=True):
-            diarization_file.write(f"Speaker {speaker}: {turn.start:.2f} --> {turn.end:.2f}\n")
-    print(f"화자 분리 완료: {diarization_output_path}")
+    # 오디오 로드
+    audio, sr = librosa.load(audio_path, sr=None)
 
+    # 화자별 발화 구간 저장 및 음성 파일 생성
+    with open(diarization_output_path, "w") as diarization_file:
+        for i, (turn, _, speaker) in enumerate(diarization.itertracks(yield_label=True)):
+            diarization_file.write(f"Speaker {speaker}: {turn.start:.2f} --> {turn.end:.2f}\n")
+            
+            # 화자별 음성 저장
+            start_sample = int(turn.start * sr)
+            end_sample = int(turn.end * sr)
+            speaker_audio = audio[start_sample:end_sample]
+            
+            speaker_file_path = os.path.join(speaker_audio_dir, f"speaker_{speaker}_part_{i}.wav")
+            sf.write(speaker_file_path, speaker_audio, sr)
+            print(f"화자 {speaker} 음성 파일 저장 완료: {speaker_file_path}")
+    
+    print(f"화자 분리 및 음성 파일 생성 완료: {diarization_output_path}")
 
 # Step 4: 통합 실행
 def process_video(video_path, output_dir, hf_token):
@@ -40,17 +54,21 @@ def process_video(video_path, output_dir, hf_token):
     audio_output_path = os.path.join(output_dir, "extracted_audio.wav")
     spleeter_output_dir = os.path.join(output_dir, "spleeter_output")
     diarization_output_path = os.path.join(output_dir, "speaker_diarization.txt")
+    speaker_audio_dir = os.path.join(output_dir, "speakers_audio")
+    
+    if not os.path.exists(speaker_audio_dir):
+        os.makedirs(speaker_audio_dir)
     
     # 작업 실행
     print("1. 영상에서 오디오 추출 중...")
-    extract_audio_from_video(video_path, audio_output_path)
+    #extract_audio_from_video(video_path, audio_output_path)
     
     print("2. 오디오에서 음원 분리 중...")
-    separate_audio_with_spleeter(audio_output_path, spleeter_output_dir)
+    #separate_audio_with_spleeter(audio_output_path, spleeter_output_dir)
     
-    print("3. 화자 분리 작업 중...")
+    print("3. 화자 분리 및 음성 파일 생성 작업 중...")
     vocals_path = os.path.join(spleeter_output_dir, "extracted_audio/vocals.wav")
-    diarize_speakers(vocals_path, diarization_output_path, hf_token)
+    diarize_speakers(vocals_path, diarization_output_path, speaker_audio_dir, hf_token)
 
     print(f"처리 완료! 결과물은 {output_dir}에서 확인하세요.")
 
