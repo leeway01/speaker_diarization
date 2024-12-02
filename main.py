@@ -61,10 +61,10 @@ def process_video(video_path, output_dir, hf_token):
     
     # 작업 실행
     print("1. 영상에서 오디오 추출 중...")
-    #extract_audio_from_video(video_path, audio_output_path)
+    extract_audio_from_video(video_path, audio_output_path)
     
     print("2. 오디오에서 음원 분리 중...")
-    #separate_audio_with_spleeter(audio_output_path, spleeter_output_dir)
+    separate_audio_with_spleeter(audio_output_path, spleeter_output_dir)
     
     print("3. 화자 분리 및 음성 파일 생성 작업 중...")
     vocals_path = os.path.join(spleeter_output_dir, "extracted_audio/vocals.wav")
