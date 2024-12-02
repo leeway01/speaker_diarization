@@ -1,9 +1,5 @@
 import os
 
-# 심볼릭 링크 대신 파일 복사 사용 설정
-os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
-os.environ["SB_DISABLE_SYMLINKS"] = "1"
-
 from moviepy.editor import AudioFileClip
 from spleeter.separator import Separator
 from pyannote.audio import Pipeline
