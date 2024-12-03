@@ -11,7 +11,7 @@ pip install torch torchvision torchaudio<br/>
 pip install pyannote.audio<br/>
 pip install pydub<br/>
 pip install openai-whisper<br/>
-pip install speechbrain<br/>
+pip install elevenlabs<br/>
 
 [moviepy.editor 오류시 moviepy 버전 다운그레이드 및 호환]<br/>
 pip install moviepy==1.0.3<br/>
