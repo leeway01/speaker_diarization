@@ -1,11 +1,7 @@
 # speaker_diarization
-<<<<<<< HEAD
-[https://huggingface.co/](https://huggingface.co/pyannote/speaker-diarization)
-=======
 [https://huggingface.co/](https://huggingface.co/pyannote/speaker-diarization)<br/>
 
 python version : 3.10.11<br/>
->>>>>>> a69bea4da9590e2fa5412fec2238a4427e090e12
 
 venv\Scripts\activate
 
