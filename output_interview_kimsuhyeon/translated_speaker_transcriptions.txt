@@ -1,0 +1,7 @@
+SPEAKER_00:
+  [7.71 - 15.03] Hello, this is Kim Soo-hyun. I greet you as a model for the brand Frombio, which turns nature into health with technology, thinking about everyone's health.
+  [19.03 - 31.38] When choosing health functional foods, you may be worried because there are so many products. Chromebio is a trustworthy brand that has the philosophy and technology to contain the health of nature as it is, so you can consume it with confidence.
+  [35.52 - 45.02] I recommend Boswellia for joint cartilage. It's not only good for those who have joint discomfort, but also for those who are frequently physically active. It's a great product for joint health.
+  [48.72 - 60.31] You may be familiar with taking care of your intestinal health with probiotics. However, gastric health also needs to be managed. I recommend "WiEnJangEn Mastic Probiotics", which easily takes care of both gastric and intestinal health at one go.
+  [64.02 - 73.37] Recently, many people are managing their health with lemon juice. Organic Rejamong is a product that allows you to easily consume 100% organic lemon and grapefruit in daily life.
+

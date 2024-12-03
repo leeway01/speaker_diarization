@@ -7,6 +7,7 @@ import soundfile as sf
 from whisper import load_model
 import requests
 from elevenlabs import ElevenLabs
+import openai
 
 # Step 1: 영상에서 오디오 추출
 def extract_audio_from_video(video_path, audio_output_path):
@@ -57,7 +58,43 @@ def transcribe_speakers(audio_path, speaker_segments, stt_model):
 
     return speaker_texts
 
-# Step 5: 텍스트 파일 저장
+# Step 5: 텍스트 번역 (GPT-4 사용)
+def translate_transcriptions_gpt(transcriptions, openai_api_key):
+    openai.api_key = openai_api_key
+    translated_texts = {}
+
+    for speaker, texts in transcriptions.items():
+        translated_texts[speaker] = []
+        for entry in texts:
+            try:
+                # OpenAI API 호출
+                response = openai.ChatCompletion.create(
+                    model="gpt-4",
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant that translates text from Korean to English."},
+                        {"role": "user", "content": entry["text"]},
+                    ]
+                )
+                translated_text = response['choices'][0]['message']['content'].strip()
+
+                translated_texts[speaker].append({
+                    "start": entry["start"],
+                    "end": entry["end"],
+                    "text": translated_text
+                })
+                print(f"번역 완료: {entry['text']} -> {translated_text}")
+
+            except Exception as e:
+                print(f"번역 실패: {e}")
+                translated_texts[speaker].append({
+                    "start": entry["start"],
+                    "end": entry["end"],
+                    "text": f"번역 실패: {entry['text']}"
+                })
+
+    return translated_texts
+
+# Step 6: 텍스트 파일 저장
 def save_transcriptions(transcriptions, output_path):
     with open(output_path, "w") as f:
         for speaker, texts in transcriptions.items():
@@ -67,7 +104,7 @@ def save_transcriptions(transcriptions, output_path):
             f.write("\n")
     print(f"화자별 텍스트 저장 완료: {output_path}")
 
-# Step 6: TTS로 텍스트를 음성으로 변환
+# Step 7: TTS로 텍스트를 음성으로 변환
 def generate_tts_from_transcriptions(transcriptions, output_dir, tts_api_key):
     # ElevenLabs 클라이언트 초기화
     client = ElevenLabs(api_key=tts_api_key)
@@ -95,11 +132,12 @@ def generate_tts_from_transcriptions(transcriptions, output_dir, tts_api_key):
             print(f"{speaker}의 음성 파일 저장 완료: {audio_file_path}")
 
 # Main: 통합 실행
-def process_video(video_path, output_dir, hf_token, tts_api_key, stt_model="large"):
+def process_video(video_path, output_dir, hf_token, tts_api_key, openai_api_key, stt_model="large"):
     audio_output_path = os.path.join(output_dir, "extracted_audio.wav")
     spleeter_output_dir = os.path.join(output_dir, "spleeter_output")
     diarization_output_path = os.path.join(output_dir, "speaker_diarization.txt")
     transcriptions_output_path = os.path.join(output_dir, "speaker_transcriptions.txt")
+    translated_transcriptions_output_path = os.path.join(output_dir, "translated_speaker_transcriptions.txt")
 
     if not os.path.exists(spleeter_output_dir):
         os.makedirs(spleeter_output_dir)
@@ -117,11 +155,14 @@ def process_video(video_path, output_dir, hf_token, tts_api_key, stt_model="larg
     print("4. 화자별 텍스트 변환 중...")
     transcriptions = transcribe_speakers(vocals_path, speaker_segments, stt_model)
 
-    print("5. 화자별 텍스트 파일 저장 중...")
-    save_transcriptions(transcriptions, transcriptions_output_path)
+    print("5. 화자별 텍스트 번역 중...")
+    translated_transcriptions = translate_transcriptions_gpt(transcriptions, openai_api_key)
 
-    print("6. 화자별 음성을 음성 파일로 변환 중...")
-    generate_tts_from_transcriptions(transcriptions, output_dir, tts_api_key)
+    print("6. 번역된 텍스트 파일 저장 중...")
+    save_transcriptions(translated_transcriptions, translated_transcriptions_output_path)
+
+    print("7. 화자별 음성을 음성 파일로 변환 중...")
+    generate_tts_from_transcriptions(translated_transcriptions, output_dir, tts_api_key)
 
     print(f"처리 완료! 결과물은 {output_dir}에서 확인하세요.")
 
@@ -135,4 +176,6 @@ if __name__ == "__main__":
 
     hf_token = input("Hugging Face 토큰을 입력하세요: ").strip()
     tts_api_key = input("ElevenLabs API 키를 입력하세요: ").strip()
-    process_video(video_file, output_directory, hf_token, tts_api_key)
+    openai_api_key = input("OpenAI API 키를 입력하세요: ").strip()
+
+    process_video(video_file, output_directory, hf_token, tts_api_key, openai_api_key)
