@@ -5,6 +5,8 @@ from pyannote.audio import Pipeline
 import librosa
 import soundfile as sf
 from whisper import load_model
+import requests
+from elevenlabs import ElevenLabs
 
 # Step 1: 영상에서 오디오 추출
 def extract_audio_from_video(video_path, audio_output_path):
@@ -65,8 +67,35 @@ def save_transcriptions(transcriptions, output_path):
             f.write("\n")
     print(f"화자별 텍스트 저장 완료: {output_path}")
 
+# Step 6: TTS로 텍스트를 음성으로 변환
+def generate_tts_from_transcriptions(transcriptions, output_dir, tts_api_key):
+    # ElevenLabs 클라이언트 초기화
+    client = ElevenLabs(api_key=tts_api_key)
+
+    for speaker, texts in transcriptions.items():
+        speaker_dir = os.path.join(output_dir, speaker)
+        os.makedirs(speaker_dir, exist_ok=True)
+        
+        for i, entry in enumerate(texts):
+            voice_id = "4XgajbaeFaof5lQX7hEo"  # ElevenLabs의 Voice ID
+            text = entry["text"]
+
+            # TTS 요청
+            audio_generator = client.text_to_speech.convert(
+                voice_id=voice_id,
+                model_id="eleven_multilingual_v2",
+                text=text,
+            )
+
+            # 음성 파일 저장
+            audio_file_path = os.path.join(speaker_dir, f"{speaker}_{i}.mp3")
+            with open(audio_file_path, "wb") as f:
+                for chunk in audio_generator:
+                    f.write(chunk)
+            print(f"{speaker}의 음성 파일 저장 완료: {audio_file_path}")
+
 # Main: 통합 실행
-def process_video(video_path, output_dir, hf_token, stt_model="large"):
+def process_video(video_path, output_dir, hf_token, tts_api_key, stt_model="large"):
     audio_output_path = os.path.join(output_dir, "extracted_audio.wav")
     spleeter_output_dir = os.path.join(output_dir, "spleeter_output")
     diarization_output_path = os.path.join(output_dir, "speaker_diarization.txt")
@@ -91,6 +120,9 @@ def process_video(video_path, output_dir, hf_token, stt_model="large"):
     print("5. 화자별 텍스트 파일 저장 중...")
     save_transcriptions(transcriptions, transcriptions_output_path)
 
+    print("6. 화자별 음성을 음성 파일로 변환 중...")
+    generate_tts_from_transcriptions(transcriptions, output_dir, tts_api_key)
+
     print(f"처리 완료! 결과물은 {output_dir}에서 확인하세요.")
 
 # 실행
@@ -102,4 +134,5 @@ if __name__ == "__main__":
         os.makedirs(output_directory)
 
     hf_token = input("Hugging Face 토큰을 입력하세요: ").strip()
-    process_video(video_file, output_directory, hf_token)
+    tts_api_key = input("ElevenLabs API 키를 입력하세요: ").strip()
+    process_video(video_file, output_directory, hf_token, tts_api_key)
