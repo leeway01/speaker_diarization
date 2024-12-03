@@ -1,5 +1,0 @@
-Speaker SPEAKER_01: 4.98 --> 13.43
-Speaker SPEAKER_02: 13.43 --> 22.86
-Speaker SPEAKER_00: 20.38 --> 28.47
-Speaker SPEAKER_02: 28.47 --> 36.97
-Speaker SPEAKER_00: 36.48 --> 37.02
