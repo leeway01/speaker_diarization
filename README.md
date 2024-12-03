@@ -12,6 +12,7 @@ pip install pyannote.audio<br/>
 pip install pydub<br/>
 pip install openai-whisper<br/>
 pip install elevenlabs<br/>
+pip install openai<br/>
 
 [moviepy.editor 오류시 moviepy 버전 다운그레이드 및 호환]<br/>
 pip install moviepy==1.0.3<br/>
