@@ -1,7 +1,14 @@
 huggingface : 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
 elevenlab : sk_aed2e28e0bbd90061c4264b2890eec1c37435b4f43125533
+<<<<<<< HEAD
 openAI : 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
 
 4XgajbaeFaof5lQX7hEo #빵형
 X1Jmp1QQbOVhd7xXXQRL #코딩애플
 mtkRlP2CvaLpJmIUrDk5 #김성회
+=======
+
+4XgajbaeFaof5lQX7hEo #빵형
+X1Jmp1QQbOVhd7xXXQRL #코딩애플
+mtkRlP2CvaLpJmIUrDk5 #김성회
+>>>>>>> e03e0b45d58343bbaa8094e082299d11cdb7c1e7
