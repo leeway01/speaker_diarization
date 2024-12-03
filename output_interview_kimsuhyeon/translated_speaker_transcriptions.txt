@@ -1,7 +1,17 @@
 SPEAKER_00:
-  [7.71 - 15.03] Hello, this is Kim Soo-hyun. I greet you as a model for the brand Frombio, which turns nature into health with technology, thinking about everyone's health.
-  [19.03 - 31.38] When choosing health functional foods, you may be worried because there are so many products. Chromebio is a trustworthy brand that has the philosophy and technology to contain the health of nature as it is, so you can consume it with confidence.
-  [35.52 - 45.02] I recommend Boswellia for joint cartilage. It's not only good for those who have joint discomfort, but also for those who are frequently physically active. It's a great product for joint health.
-  [48.72 - 60.31] You may be familiar with taking care of your intestinal health with probiotics. However, gastric health also needs to be managed. I recommend "WiEnJangEn Mastic Probiotics", which easily takes care of both gastric and intestinal health at one go.
-  [64.02 - 73.37] Recently, many people are managing their health with lemon juice. Organic Rejamong is a product that allows you to easily consume 100% organic lemon and grapefruit in daily life.
+  [7.71 - 15.03]
+    한글:  안녕하세요 김수현입니다. 자연이 건강이 되는 기술로 여러분의 건강을 생각하는 브랜드 프롬바이오 모델로 인사드립니다.
+    영어: Hello, I'm Kim Soo Hyun. As a model for the brand FromBio, which promotes technology that turns nature into health, I greet you all while considering your health.
+  [19.03 - 31.38]
+    한글:  건강기능식품을 고를 때 너무 많은 제품들이 있어서 고민되실 텐데요. 크롬바이오는 안심하고 섭취하실 수 있도록 자연의 건강을 그대로 담는다는 철학과 기술력을 가지고 있어서 믿을 수 있는 브랜드입니다.
+    영어: When choosing a health functional food, you might be worried because there are so many products. Chromebio is a trustworthy brand that holds the philosophy and technology to contain the natural health as it is, so you can consume it with confidence.
+  [35.52 - 45.02]
+    한글:  관절 연골엔 보스웰리아를 추천드립니다. 관절이 불편한 분들께도 좋지만 신체 활동을 자주 하시는 분들도 관절 건강을 위해서 드시기 좋은 제품입니다.
+    영어: I recommend Boswellia for joint cartilage. It's not only good for those who have joint discomfort but also for those who are frequently physically active, a great product for joint health.
+  [48.72 - 60.31]
+    한글:  장 건강은 유산균으로 챙기는 게 익숙하실 텐데요. 위 건강도 관리가 필요합니다. 위와 장 건강을 한 번에 쉽게 챙길 수 있는 위엔장엔 메스틱 유산균 추천드립니다.
+    영어: You may be familiar with taking care of your intestinal health with probiotics. However, your stomach health also needs attention. I recommend "Wienjangen Mastic Probiotics" that can easily take care of both your stomach and intestinal health at once.
+  [64.02 - 73.37]
+    한글:  최근 레몬즙으로 건강관리 하시는 분들 많은데요. 유기농 레자몽은 100% 유기농 레몬에 자몽까지 일상에서 쉽게 섭취할 수 있도록 하는 제품입니다.
+    영어: Recently, many people have been taking care of their health with lemon juice. Organic Rezamom is a product that allows you to easily consume 100% organic lemons and grapefruit in daily life.
 
