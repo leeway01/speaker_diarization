@@ -1,4 +1,5 @@
 # speaker_diarization
+
 [https://huggingface.co/](https://huggingface.co/pyannote/speaker-diarization)<br/>
 
 python version : 3.10.11<br/>
@@ -13,6 +14,7 @@ pip install pydub<br/>
 pip install openai-whisper<br/>
 pip install elevenlabs<br/>
 pip install openai<br/>
+pip install speedup<br/>
 
 [moviepy.editor 오류시 moviepy 버전 다운그레이드 및 호환]<br/>
 pip install moviepy==1.0.3<br/>
@@ -23,6 +25,7 @@ pip install numpy==1.23.5<br/>
 ffmpeg-git-full.7z 다운 후 환경변수 Path에 추가<br/>
 
 [관리자 권한 얻기] <br/>
+
 1. Win+R 검색창
 2. secpol.msc
 3. 로컬정책 -> 보안옵션 -> 관리 승인 모드에서 모든 관리자 실행(속성) -> 로컬 보안설정(사용안함)

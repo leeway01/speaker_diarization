@@ -1,0 +1,49 @@
+SPEAKER_01:
+  [0.03 - 6.66]
+    한글:  찾았다! 우리 이웃! 저분은 로빈씨입니다. 한국에서 결혼하고 8살 아이를 키우신대요.
+    영어: I found him! Our neighbor! That's Mr. Robin. I heard he got married in Korea and is raising an 8-year-old child.
+  [10.65 - 15.34]
+    한글:  한국이 너무 좋아서 기와로 결심하셨고 이제 마무리 단계시래요.
+    영어: You decided on Korea because you like it so much, and now you're in the final stages.
+  [20.06 - 25.16]
+    한글:  저 분은 로렌씨. 곰바로우시였다가 한국에서 취업까지 하셨대요.
+    영어: That person is Loren. He was in Gombrow City and even got a job in Korea.
+  [30.84 - 35.59]
+    한글:  동료들과 함께하는 커피타임이 삶의 낙인 건 우리 모두 똑같죠?
+    영어: Isn't coffee time with colleagues the joy of life for all of us?
+  [38.74 - 44.58]
+    한글:  저분은 한국 귀하 트로트 가수 레오씨에요. 한국에서 결혼하셨고 고등학생 아이도 있죠.
+    영어: That person is a famous Korean trot singer, Mr. Leo. He is married in Korea and has a high school-age child.
+  [47.92 - 53.73]
+    한글:  맞아요. 한국에서 댄서로 일하시다가 트로트의 매력에 푹 빠지셔서 트로트 가수가 되셨대요.
+    영어: That's right. They were working as a dancer in Korea and fell deeply in love with the charm of Trot, so they became a Trot singer.
+  [54.37 - 60.19]
+    한글:  우리 사회 곳곳에는 각자의 자리에서 최선을 다하는 수많은 이주배경 이웃들이 있습니다.
+    영어: In every corner of our society, there are countless neighbors with immigrant backgrounds who are doing their best in their respective positions.
+  [68.61 - 76.46]
+    한글:  이곳 대한민국에서 우리와 함께 일하는 250만 이주배경 이웃들 우리는 모두 화이팅!
+    영어: We are all rooting for the 2.5 million neighbors from immigrant backgrounds working with us here in South Korea!
+
+SPEAKER_00:
+  [6.85 - 10.24]
+    한글:  와우, 한 가정의 가장이시구나.
+    영어: Wow, you are the head of a household.
+  [15.57 - 19.94]
+    한글:  귀하 시험이 그렇게 어렵다던데 대단하네요.
+    영어: I heard your exam was really tough. That's impressive.
+  [25.02 - 25.04]
+    한글:  Thank you.
+    영어: Thank you.
+  [26.31 - 30.02]
+    한글:  와우, 이 하늘 모습이 엄청 멋있어요.
+    영어: Wow, this sky view is incredibly awesome.
+  [36.16 - 38.73]
+    한글:  사람 쌓는 거 다 똑같네요.
+    영어: Everyone builds a person in the same way.
+  [44.58 - 47.28]
+    한글:  홍운이 정말 넘치시는데요
+    영어: You are really full of good luck.
+  [60.41 - 68.16]
+    한글:  네 맞아요 꾸준히 다만화 인형극을 올려 함께하는 세상을 만드는 우리도 있죠
+    영어: Yes, that's right. We are also creating a world together by consistently uploading puppet shows.
+

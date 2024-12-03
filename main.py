@@ -115,11 +115,42 @@ def save_translations(translations, output_path):
             f.write("\n")
     print(f"번역된 텍스트 저장 완료: {output_path}")
 
+# 화자별 음성 선택
+def select_voice_id_for_speaker(speaker):
+    """
+    화자별 voice_id를 사용자 입력으로 선택합니다.
+    """
+    voice_options = {
+        1: "4XgajbaeFaof5lQX7hEo",  # 빵형
+        2: "X1Jmp1QQbOVhd7xXXQRL",  # 코딩애플
+        3: "mtkRlP2CvaLpJmIUrDk5",  # 김성회
+    }
+
+    print(f"화자 {speaker}에 대해 사용할 voice_id를 선택하세요:")
+    print("1: 빵형")
+    print("2: 코딩애플")
+    print("3: 김성회")
+
+    while True:
+        try:
+            choice = int(input(f"화자 {speaker}의 voice_id 선택 (1~3): "))
+            if choice in voice_options:
+                return voice_options[choice]
+            else:
+                print("잘못된 입력입니다. 1~3 사이의 숫자를 입력하세요.")
+        except ValueError:
+            print("숫자를 입력하세요.")
+
 # Step 7: TTS로 텍스트를 음성으로 변환 (품질 개선 및 타임 스트레칭 포함)
 def generate_tts_from_translations(translations, tts_output_dir, tts_api_key):
     client = ElevenLabs(api_key=tts_api_key)
+    speaker_voice_map = {}
 
     for speaker, texts in translations.items():
+        # 화자별 voice_id 선택
+        if speaker not in speaker_voice_map:
+            speaker_voice_map[speaker] = select_voice_id_for_speaker(speaker)
+
         speaker_dir = os.path.join(tts_output_dir, speaker)
         os.makedirs(speaker_dir, exist_ok=True)
 
@@ -131,42 +162,33 @@ def generate_tts_from_translations(translations, tts_output_dir, tts_api_key):
                 print(f"{speaker}의 음성 파일이 이미 존재합니다: {output_path}")
                 continue
 
-            voice_id = "4XgajbaeFaof5lQX7hEo"  # ElevenLabs의 Voice ID
+            voice_id = speaker_voice_map[speaker]
             text = entry["translated_text"]
+            duration = entry["end"] - entry["start"]
 
-            # TTS 요청
-            print(f"Generating TTS for {speaker} [{entry['start']:.2f}-{entry['end']:.2f}]: {text}")
-            audio_generator = client.text_to_speech.convert(
-                voice_id=voice_id,
-                model_id="eleven_multilingual_v2",
-                text=text,
-            )
+            # 텍스트가 없거나 재생 시간이 너무 짧은 경우 스킵
+            if not text.strip() or duration <= 0:
+                print(f"Skipping TTS for {speaker}: Invalid text or duration.")
+                continue
 
-            # TTS 음성을 고해상도 출력으로 저장
-            raw_tts_audio_path = os.path.join(speaker_dir, f"{speaker}_{entry['start']:.2f}_{entry['end']:.2f}_raw.wav")
-            with open(raw_tts_audio_path, "wb") as f:
-                for chunk in audio_generator:
-                    f.write(chunk)
+            try:
+                # TTS 요청
+                print(f"Generating TTS for {speaker} [{entry['start']:.2f}-{entry['end']:.2f}] with voice_id {voice_id}: {text}")
+                audio_generator = client.text_to_speech.convert(
+                    voice_id=voice_id,
+                    model_id="eleven_multilingual_v2",
+                    text=text,
+                )
 
-            # 타임 스트레칭 적용 (품질 유지)
-            target_duration = entry["end"] - entry["start"]  # 초 단위
-            tts_audio, sr = librosa.load(raw_tts_audio_path, sr=None)
-            original_duration = len(tts_audio) / sr
+                # TTS 음성을 고해상도 출력으로 저장
+                with open(output_path, "wb") as f:
+                    for chunk in audio_generator:
+                        f.write(chunk)
 
-            if abs(original_duration - target_duration) > 0.1:  # 차이가 0.1초 이상일 때만 적용
-                stretch_ratio = original_duration / target_duration
-                stretched_audio = librosa.effects.time_stretch(tts_audio, rate=stretch_ratio)
-            else:
-                stretched_audio = tts_audio
+                print(f"{speaker}의 음성 파일 저장 완료: {output_path}")
 
-            # TTS 음성을 고해상도 출력으로 저장
-            sf.write(output_path, stretched_audio, sr, subtype='PCM_16', format='WAV')  # PCM 16비트로 저장
-
-            print(f"{speaker}의 음성 파일 저장 완료: {output_path}")
-
-            # 임시 파일 삭제
-            os.remove(raw_tts_audio_path)
-
+            except Exception as e:
+                print(f"Failed to generate TTS for {speaker}: {e}")
 
 
 # Step 8: 음성과 배경음 합쳐 최종 영상 생성
@@ -237,14 +259,16 @@ def process_video(video_path, output_dir, hf_token, tts_api_key, openai_api_key,
 
 # 실행
 if __name__ == "__main__":
-    video_file = "videoplayback_interview.mp4"  # 입력 영상 파일 경로
-    output_directory = "output_interview_kimsuhyeon"  # 출력 디렉터리
+    video_file = "videoplayback.mp4"  # 입력 영상 파일 경로
+    output_directory = "output"  # 출력 디렉터리
 
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
-    hf_token = "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"  # Hugging Face 토큰
-    tts_api_key = "sk_aed2e28e0bbd90061c4264b2890eec1c37435b4f43125533"  # ElevenLabs API 키
-    openai_api_key = "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"  # OpenAI API 키
+    # 사용자로부터 토큰 입력받기
+    hf_token = input("Hugging Face 토큰을 입력하세요: ").strip()
+    tts_api_key = input("ElevenLabs API 키를 입력하세요: ").strip()
+    openai_api_key = input("OpenAI API 키를 입력하세요: ").strip()
 
+    # 함수 실행
     process_video(video_file, output_directory, hf_token, tts_api_key, openai_api_key)
